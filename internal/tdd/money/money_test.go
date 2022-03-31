@@ -11,20 +11,40 @@ import "testing"
 // 开始时,一定要从小处开始,这是非常有必要的.
 
 func TestMultiplication(t *testing.T) {
-	// 美元股的资产计算,两股5美元的股票是10美元的资产
-	fiver := Dollar{
-		amount: 5,
+	type testcase struct {
+		oneStock Money
+		times    int
+		allStock Money
 	}
-	tenner := fiver.Times(2)
-	if tenner.amount != 10 {
-		t.Fatalf("want 10, get %d", tenner.amount)
+	table := []testcase{
+		{
+			oneStock: Money{amount: 5, currency: "USD"},
+			times:    2,
+			allStock: Money{amount: 10, currency: "USD"},
+		},
+		{
+			oneStock: Money{amount: 5, currency: "EUR"},
+			times:    2,
+			allStock: Money{amount: 10, currency: "EUR"},
+		},
+	}
+
+	for _, tc := range table {
+		all := tc.oneStock.Times(tc.times)
+		if all.amount != tc.allStock.amount {
+			t.Fatalf("want %d, got %d", tc.allStock.amount, all.amount)
+		}
+		if all.currency != tc.allStock.currency {
+			t.Fatalf("want %s, got %s", tc.allStock.currency, all.currency)
+		}
 	}
 }
 
-type Dollar struct {
-	amount int
+type Money struct {
+	amount   int
+	currency string
 }
 
-func (d Dollar) Times(multiplier int) Dollar {
-	return Dollar{amount: d.amount * multiplier}
+func (m Money) Times(multiplier int) Money {
+	return Money{amount: m.amount * multiplier, currency: m.currency}
 }
