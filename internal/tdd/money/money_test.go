@@ -105,7 +105,7 @@ func TestAddition(t *testing.T) {
 
 	fiveDollars := Money{amount: 5, currency: "USD"}
 	tenDollars := Money{amount: 10, currency: "USD"}
-	fifteenDollars := Money{amount: 10, currency: "USD"}
+	fifteenDollars := Money{amount: 15, currency: "USD"}
 
 	var portfolio Portfolio
 	portfolio = portfolio.Add(fiveDollars).Add(tenDollars)
@@ -132,8 +132,21 @@ func (m Money) Divide(divisor int) Money {
 
 type Portfolio []Money
 
-func (p Portfolio) Add(m Money) Portfolio { return p }
-func (p Portfolio) Evaluate(string) Money { return Money{} }
+func (p Portfolio) Add(m Money) Portfolio {
+	p = append(p, m)
+	return p
+}
+
+func (p Portfolio) Evaluate(currency string) Money {
+	total := 0.0
+	for _, m := range p {
+		total += m.amount
+	}
+	return Money{
+		amount:   total,
+		currency: currency,
+	}
+}
 
 func assertEqual(t *testing.T, want, got Money) {
 	t.Helper()
