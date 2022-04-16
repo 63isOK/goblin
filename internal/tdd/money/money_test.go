@@ -1,4 +1,4 @@
-package main
+package main_test
 
 import "testing"
 
@@ -11,30 +11,37 @@ import "testing"
 // 开始时,一定要从小处开始,这是非常有必要的.
 
 func TestMultiplicationUSD(t *testing.T) {
+	t.Parallel()
 	testMultiplication(t, "USD")
 }
 
 func TestMultiplicationEUR(t *testing.T) {
+	t.Parallel()
 	testMultiplication(t, "EUR")
 }
 
 func TestMultiplicationKRW(t *testing.T) {
+	t.Parallel()
 	testMultiplication(t, "KRW")
 }
 
 func testMultiplication(t *testing.T, currency string) {
 	type testcase struct {
+		name  string
 		m     Money
 		times int
 		want  Money
 	}
+
 	table := []testcase{
 		{
+			name:  "5元的2倍是10元",
 			m:     Money{amount: 5, currency: currency},
 			times: 2,
 			want:  Money{amount: 10, currency: currency},
 		},
 		{
+			name:  "5元的6倍是30元",
 			m:     Money{amount: 5, currency: currency},
 			times: 6,
 			want:  Money{amount: 30, currency: currency},
@@ -42,20 +49,28 @@ func testMultiplication(t *testing.T, currency string) {
 	}
 
 	for _, tc := range table {
-		got := tc.m.Times(tc.times)
-		assertEqual(t, tc.want, got)
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+
+			got := tc.m.Times(tc.times)
+			assertEqual(t, tc.want, got)
+		})
 	}
 }
 
 func TestDivisionUSD(t *testing.T) {
+	t.Parallel()
 	testDivision(t, "USD")
 }
 
 func TestDivisionEUR(t *testing.T) {
+	t.Parallel()
 	testDivision(t, "EUR")
 }
 
 func TestDivisionKRW(t *testing.T) {
+	t.Parallel()
 	testDivision(t, "KRW")
 }
 
@@ -65,6 +80,7 @@ func testDivision(t *testing.T, currency string) {
 		divisor int
 		want    Money
 	}
+
 	table := []testcase{
 		{
 			m:       Money{amount: 5, currency: currency},
@@ -84,6 +100,20 @@ func testDivision(t *testing.T, currency string) {
 	}
 }
 
+func TestAddition(t *testing.T) {
+	t.Parallel()
+
+	fiveDollars := Money{amount: 5, currency: "USD"}
+	tenDollars := Money{amount: 10, currency: "USD"}
+	fifteenDollars := Money{amount: 10, currency: "USD"}
+
+	var portfolio Portfolio
+	portfolio = portfolio.Add(fiveDollars).Add(tenDollars)
+	portfolioInDollars := portfolio.Evaluate("USD")
+
+	assertEqual(t, fifteenDollars, portfolioInDollars)
+}
+
 type Money struct {
 	amount   float64
 	currency string
@@ -100,8 +130,14 @@ func (m Money) Divide(divisor int) Money {
 	}
 }
 
+type Portfolio []Money
+
+func (p Portfolio) Add(m Money) Portfolio { return p }
+func (p Portfolio) Evaluate(string) Money { return Money{} }
+
 func assertEqual(t *testing.T, want, got Money) {
 	t.Helper()
+
 	if want != got {
 		t.Errorf("want: %+v, got: %+v", want, got)
 	}
