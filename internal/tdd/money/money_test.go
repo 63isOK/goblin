@@ -10,41 +10,99 @@ import "testing"
 // tdd 思考, 问题拆为两个:单支股的资产计算; 汇率转换
 // 开始时,一定要从小处开始,这是非常有必要的.
 
-func TestMultiplication(t *testing.T) {
+func TestMultiplicationUSD(t *testing.T) {
+	testMultiplication(t, "USD")
+}
+
+func TestMultiplicationEUR(t *testing.T) {
+	testMultiplication(t, "EUR")
+}
+
+func TestMultiplicationKRW(t *testing.T) {
+	testMultiplication(t, "KRW")
+}
+
+func testMultiplication(t *testing.T, currency string) {
 	type testcase struct {
-		oneStock Money
-		times    int
-		allStock Money
+		m     Money
+		times int
+		want  Money
 	}
 	table := []testcase{
 		{
-			oneStock: Money{amount: 5, currency: "USD"},
-			times:    2,
-			allStock: Money{amount: 10, currency: "USD"},
+			m:     Money{amount: 5, currency: currency},
+			times: 2,
+			want:  Money{amount: 10, currency: currency},
 		},
 		{
-			oneStock: Money{amount: 5, currency: "EUR"},
-			times:    2,
-			allStock: Money{amount: 10, currency: "EUR"},
+			m:     Money{amount: 5, currency: currency},
+			times: 6,
+			want:  Money{amount: 30, currency: currency},
 		},
 	}
 
 	for _, tc := range table {
-		all := tc.oneStock.Times(tc.times)
-		if all.amount != tc.allStock.amount {
-			t.Fatalf("want %d, got %d", tc.allStock.amount, all.amount)
-		}
-		if all.currency != tc.allStock.currency {
-			t.Fatalf("want %s, got %s", tc.allStock.currency, all.currency)
-		}
+		got := tc.m.Times(tc.times)
+		assertEqual(t, tc.want, got)
+	}
+}
+
+func TestDivisionUSD(t *testing.T) {
+	testDivision(t, "USD")
+}
+
+func TestDivisionEUR(t *testing.T) {
+	testDivision(t, "EUR")
+}
+
+func TestDivisionKRW(t *testing.T) {
+	testDivision(t, "KRW")
+}
+
+func testDivision(t *testing.T, currency string) {
+	type testcase struct {
+		m       Money
+		divisor int
+		want    Money
+	}
+	table := []testcase{
+		{
+			m:       Money{amount: 5, currency: currency},
+			divisor: 2,
+			want:    Money{amount: 2.5, currency: currency},
+		},
+		{
+			m:       Money{amount: 4002, currency: currency},
+			divisor: 4,
+			want:    Money{amount: 1000.5, currency: currency},
+		},
+	}
+
+	for _, tc := range table {
+		got := tc.m.Divide(tc.divisor)
+		assertEqual(t, tc.want, got)
 	}
 }
 
 type Money struct {
-	amount   int
+	amount   float64
 	currency string
 }
 
 func (m Money) Times(multiplier int) Money {
-	return Money{amount: m.amount * multiplier, currency: m.currency}
+	return Money{amount: m.amount * float64(multiplier), currency: m.currency}
+}
+
+func (m Money) Divide(divisor int) Money {
+	return Money{
+		amount:   m.amount / float64(divisor),
+		currency: m.currency,
+	}
+}
+
+func assertEqual(t *testing.T, want, got Money) {
+	t.Helper()
+	if want != got {
+		t.Errorf("want: %+v, got: %+v", want, got)
+	}
 }
