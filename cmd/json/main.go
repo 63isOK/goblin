@@ -26,6 +26,7 @@ func main() {
 	}
 
 	fmt.Println(string(b))
+	testNil()
 }
 
 type oneIntanceConfig struct {
@@ -37,4 +38,14 @@ type oneIntanceConfig struct {
 type instanceConfigs struct {
 	// instances []int `json:"instances"`
 	DD int `json:"dd"`
+}
+
+func testNil() {
+	s := "{}"
+	var o interface{}
+	err := json.Unmarshal([]byte(s), &o)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("%+v", o)
 }

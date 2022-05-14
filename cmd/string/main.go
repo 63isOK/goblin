@@ -13,6 +13,7 @@ import (
 const LocalOSSPath = "./assets/"
 
 func main() {
+	join()
 	getPath()
 	quoted()
 }
@@ -222,4 +223,14 @@ func getu4(s []byte) rune {
 		r = r*16 + rune(c)
 	}
 	return r
+}
+
+func join() {
+	println("============join==============")
+
+	strs := []string{"a", "b", "c"}
+	println("strings.Join(a,b,c)", strings.Join(strs, ","))
+
+	strs = []string{"a"}
+	println("strings.Join(a,b,c)", strings.Join(strs, ","))
 }
