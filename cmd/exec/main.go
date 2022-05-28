@@ -61,6 +61,5 @@ curl --location --request GET 'http://127.0.0.1:5320/parking_space_status_change
 	if err != nil {
 		panic(err)
 	}
-
 	println(string(stdoutStderr))
 }
