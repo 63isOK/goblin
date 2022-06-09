@@ -13,7 +13,7 @@ func main() {
 
 	println("================")
 
-	scanResponse()
+	// scanResponse()
 }
 
 func scanResponse() {
