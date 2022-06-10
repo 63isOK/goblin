@@ -5,6 +5,7 @@ go 1.18
 require (
 	github.com/apolloconfig/agollo/v4 v4.1.1
 	github.com/hyperjumptech/grule-rule-engine v1.10.5
+	github.com/robfig/cron/v3 v3.0.1
 	github.com/sirupsen/logrus v1.8.1
 	golang.org/x/exp v0.0.0-20220428152302-39d4317da171
 )
