@@ -52,6 +52,40 @@ type rule struct {
 	ruleType
 }
 
+func (r *rule) UnmarshalJSON(b []byte) error {
+	type oldRule rule
+	or := new(oldRule)
+	if err := json.Unmarshal(b, or); err != nil {
+		return err
+	}
+
+	switch or.RType {
+	case "aconfig":
+		o := new(A)
+		if err := mapstructure.Decode(or.Config, o); err != nil {
+			return err
+		}
+		r.Config = o
+	case "bconfig":
+		o := new(B)
+		if err := mapstructure.Decode(or.Config, o); err != nil {
+			return err
+		}
+		r.Config = o
+	case "objconfig":
+		o := new(Obj)
+		if err := mapstructure.Decode(or.Config, o); err != nil {
+			return err
+		}
+		r.Config = o
+	default:
+		return errors.New("unknown type")
+	}
+
+	r.RType = or.RType
+	return nil
+}
+
 // 这种写法会导致无限循环: 如果结构体带泛型,那么解析时需要指定类型,这种场景显然不科学
 //
 // 最终的实现,还是从泛型+json走到了json+any, 在调用方处理不同的配置
@@ -125,6 +159,20 @@ func parseJSON() {
 	fmt.Printf("type:%s, config: %+v\n", r.RType, r.Config)
 }
 
+func p2(b []byte) {
+	r := new(rule)
+	if err := json.Unmarshal(b, r); err != nil {
+		panic(err)
+	}
+	fmt.Printf("type:%s, config: %+v\n", r.RType, r.Config)
+}
+
+func parseJson2() {
+	p2([]byte(aj))
+	p2([]byte(bj))
+	p2([]byte(objj))
+}
+
 type A struct {
 	Name string `json:"name"`
 }
@@ -158,6 +206,8 @@ func main() {
 	// parseRule([]byte(objj))
 	fmt.Println("============")
 	parseJSON()
+	fmt.Println("============")
+	parseJson2()
 }
 
 // type Config interface {
