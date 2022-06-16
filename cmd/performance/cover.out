@@ -1,0 +1,10 @@
+mode: set
+github.com/63isOK/goblin/cmd/performance/fill_slice.go:7.25,9.24 2 1
+github.com/63isOK/goblin/cmd/performance/fill_slice.go:13.2,13.12 1 1
+github.com/63isOK/goblin/cmd/performance/fill_slice.go:9.24,11.3 1 1
+github.com/63isOK/goblin/cmd/performance/fill_slice.go:16.34,18.24 2 0
+github.com/63isOK/goblin/cmd/performance/fill_slice.go:22.2,22.12 1 0
+github.com/63isOK/goblin/cmd/performance/fill_slice.go:18.24,20.3 1 0
+github.com/63isOK/goblin/cmd/performance/fill_slice.go:25.25,27.24 2 0
+github.com/63isOK/goblin/cmd/performance/fill_slice.go:31.2,31.12 1 0
+github.com/63isOK/goblin/cmd/performance/fill_slice.go:27.24,29.3 1 0
