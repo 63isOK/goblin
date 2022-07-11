@@ -5,8 +5,10 @@ go 1.18
 require (
 	github.com/apolloconfig/agollo/v4 v4.1.1
 	github.com/gin-gonic/gin v1.8.1
+	github.com/hashicorp/go-multierror v1.0.0
 	github.com/hyperjumptech/grule-rule-engine v1.10.5
 	github.com/jinzhu/copier v0.3.5
+	github.com/pkg/errors v0.8.1
 	github.com/robfig/cron/v3 v3.0.1
 	github.com/sirupsen/logrus v1.8.1
 	go.uber.org/fx v1.17.1
@@ -19,6 +21,7 @@ require (
 	github.com/go-playground/universal-translator v0.18.0 // indirect
 	github.com/go-playground/validator/v10 v10.10.0 // indirect
 	github.com/goccy/go-json v0.9.7 // indirect
+	github.com/hashicorp/errwrap v1.0.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/leodido/go-urn v1.2.1 // indirect
 	github.com/mattn/go-isatty v0.0.14 // indirect
