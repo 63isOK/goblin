@@ -9,4 +9,16 @@ func main() {
 	for v := range a {
 		println(v)
 	}
+
+	var i string
+	i = a[4]
+	println(i)
+
+	p()
+}
+
+func p() {
+	a := make(map[int]int)
+	println(a[12])
+	println(len(a))
 }
