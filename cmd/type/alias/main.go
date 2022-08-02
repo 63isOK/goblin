@@ -25,4 +25,27 @@ func main() {
 	b := B{Name: "jim"}
 	b.P()
 	b.p()
+
+	println("=========")
+	t()
+}
+
+type mt = int
+
+func t() {
+	var i int = 1
+	var m mt = 2
+
+	pmt(m)
+	pmt(i)
+	pi(i)
+	pmt(m)
+}
+
+func pmt(o mt) {
+	println(o)
+}
+
+func pi(o int) {
+	println(o)
 }
